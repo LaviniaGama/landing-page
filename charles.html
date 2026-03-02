@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charles Leclerc · Il Predestinato</title>
+  <!-- Fonts Premium & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Racing+Sans+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- GSAP (para animações suaves) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <style>
+    /* RESET E VARIÁVEIS */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ferrari-red: #e10600;
+      --ferrari-red-dark: #b00400;
+      --monaco-gold: #d4af37;
+      --monaco-gold-light: #f5d742;
+      --carbon: #0a0a0f;
+      --carbon-light: #1a1a24;
+      --titanium: #2a2a35;
+      --glass-bg: rgba(20, 20, 30, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+    }
+
+    body {
+      background-color: var(--carbon);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fundo dinâmico com grid de circuito */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 30% 40%, rgba(225, 6, 0, 0.08) 0%, transparent 30%),
+        radial-gradient(circle at 70% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 35%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 2px, transparent 2px, transparent 8px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grid animado (circuito) */
+    .circuit-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(225, 6, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(225, 6, 0, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+      animation: gridPulse 10s infinite alternate;
+    }
+
+    @keyframes gridPulse {
+      0% { opacity: 0.2; background-size: 50px 50px; }
+      100% { opacity: 0.5; background-size: 55px 55px; }
+    }
+
+    /* Linhas de velocidade (ao scroll) */
+    .speed-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(90deg, 
+        transparent, 
+        transparent 30px, 
+        rgba(225, 6, 0, 0.02) 30px, 
+        rgba(212, 175, 55, 0.02) 35px,
+        transparent 40px);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .container {
+      position: relative;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 40px;
+      z-index: 10;
+    }
+
+    /* Tipografia */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    h1 {
+      font-family: 'Racing Sans One', cursive;
+      font-size: clamp(4rem, 10vw, 7.5rem);
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 40%, var(--monaco-gold) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(225, 6, 0, 0.3);
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title {
+      position: relative;
+      margin-bottom: 3rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ferrari-red), var(--monaco-gold), transparent);
+      border-radius: 3px;
+    }
+
+    /* Navegação */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 35px;
+      margin: 20px 0 30px;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 60px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+      position: sticky;
+      top: 20px;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Racing Sans One', cursive;
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #ffffff, var(--monaco-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo span {
+      color: var(--ferrari-red);
+      -webkit-text-fill-color: var(--ferrari-red);
+      font-size: 2.5rem;
+      margin-right: 5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: white;
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--ferrari-red), var(--monaco-gold));
+    }
+
+    /* Hero Section (sem 3D, apenas imagem refinada) */
+    .hero {
+      min-height: 85vh;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 2rem 0 4rem;
+    }
+
+    .hero-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--monaco-gold);
+      margin-bottom: 1rem;
+    }
+
+    .hero-description {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 2rem 0;
+      line-height: 1.6;
+      border-left: 3px solid var(--ferrari-red);
+      padding-left: 1.8rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin: 2.5rem 0;
+    }
+
+    .stat-card {
+      background: rgba(20, 20, 30, 0.5);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1.2rem 1.8rem;
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--ferrari-red);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--ferrari-red);
+      font-family: 'Racing Sans One', cursive;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #aaa;
+      letter-spacing: 1px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--ferrari-red);
+      color: white;
+      box-shadow: 0 8px 20px -5px var(--ferrari-red);
+    }
+
+    .btn-primary:hover {
+      background: var(--ferrari-red-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -5px var(--ferrari-red);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--monaco-gold);
+      background: rgba(212, 175, 55, 0.1);
+      transform: translateY(-3px);
+    }
+
+    /* Hero Image - refinada (sem 3D) */
+    .hero-image {
+      position: relative;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 30px 50px -20px black;
+      transition: transform 0.5s;
+      height: 500px;
+      background: linear-gradient(145deg, #1a1a24, #0a0a0f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+      filter: grayscale(0.3) contrast(1.1);
+    }
+
+    .hero-image:hover img {
+      transform: scale(1.03);
+    }
+
+    .image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 2rem;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    /* Timeline Cards */
+    .timeline {
+      margin: 8rem 0;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .timeline-card {
+      background: rgba(18, 18, 24, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 2rem 1.8rem;
+      transition: all 0.4s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--ferrari-red), var(--monaco-gold));
+      transform: scaleY(0);
+      transition: transform 0.4s;
+    }
+
+    .timeline-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--ferrari-red);
+      box-shadow: 0 20px 30px -15px var(--ferrari-red);
+    }
+
+    .timeline-year {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--ferrari-red);
+      font-family: 'Racing Sans One', cursive;
+      margin-bottom: 0.8rem;
+    }
+
+    .timeline-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, #fff, var(--monaco-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Gallery de capacetes (refinada) */
+    .helmets-gallery {
+      margin: 8rem 0;
+    }
+
+    .helmets-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .helmet-item {
+      background: rgba(18, 18, 24, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--glass-border);
+      border-radius: 40px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      transition: all 0.4s;
+      cursor: default;
+    }
+
+    .helmet-item:hover {
+      transform: scale(1.02);
+      border-color: var(--monaco-gold);
+      box-shadow: 0 20px 30px -15px var(--monaco-gold);
+    }
+
+    .helmet-item i {
+      font-size: 5rem;
+      background: linear-gradient(135deg, #fff, #ccc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .helmet-year {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--monaco-gold);
+    }
+
+    /* Stats Avançadas */
+    .advanced-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin: 8rem 0;
+      background: rgba(18, 18, 24, 0.5);
+      backdrop-filter: blur(15px);
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+      padding: 3.5rem;
+    }
+
+    .stat-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.2rem;
+      height: 220px;
+      margin-top: 2rem;
+    }
+
+    .chart-bar {
+      flex: 1;
+      background: linear-gradient(to top, var(--ferrari-red), #ff4d00);
+      border-radius: 20px 20px 0 0;
+      height: 0%;
+      transition: height 1.2s ease;
+      position: relative;
+      min-width: 40px;
+    }
+
+    .chart-bar span {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #aaa;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .records-list {
+      list-style: none;
+      font-size: 1.1rem;
+    }
+
+    .records-list li {
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 1rem;
+    }
+
+    .records-list i {
+      color: var(--monaco-gold);
+      font-size: 1.5rem;
+      width: 30px;
+    }
+
+    /* Next Race */
+    .next-race {
+      background: linear-gradient(145deg, #121218, #1a1a24);
+      border-radius: 60px;
+      padding: 3.5rem;
+      margin: 8rem 0;
+      border: 1px solid var(--glass-border);
+      text-align: center;
+    }
+
+    .race-countdown {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin: 2.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .countdown-item {
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .countdown-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--ferrari-red);
+      font-family: 'Racing Sans One', cursive;
+      background: rgba(0,0,0,0.4);
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .countdown-label {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    /* Easter Egg (disco mode) */
+    .easter-egg-active h1 {
+      animation: discoColors 0.3s infinite;
+    }
+
+    @keyframes discoColors {
+      0% { color: #e10600; -webkit-text-fill-color: #e10600; }
+      25% { color: #d4af37; -webkit-text-fill-color: #d4af37; }
+      50% { color: #00ff00; -webkit-text-fill-color: #00ff00; }
+      75% { color: #0000ff; -webkit-text-fill-color: #0000ff; }
+      100% { color: #e10600; -webkit-text-fill-color: #e10600; }
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 3rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 4rem;
+      color: #888;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .social-links a {
+      color: #888;
+      font-size: 1.8rem;
+      transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+      color: var(--ferrari-red);
+      transform: translateY(-5px);
+    }
+
+    /* Animações de entrada */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s, transform 0.8s;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsividade */
+    @media (max-width: 1000px) {
+      .hero { grid-template-columns: 1fr; }
+      .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+      .helmets-grid { grid-template-columns: repeat(2, 1fr); }
+      .advanced-stats { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .timeline-grid, .helmets-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="circuit-grid"></div>
+  <div class="speed-lines" id="speedLines"></div>
+
+  <div class="container">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo"><span>#16</span> LECLERC</div>
+      <div class="nav-links">
+        <a href="#" class="active">Início</a>
+        <a href="#timeline">Carreira</a>
+        <a href="#helmets">Capacetes</a>
+        <a href="#stats">Estatísticas</a>
+        <a href="#race">Próxima Corrida</a>
+      </div>
+      <div style="color: var(--monaco-gold);">
+        <i class="fas fa-bolt"></i> MONACO
+      </div>
+    </nav>
+
+    <!-- Hero Section (sem 3D) -->
+    <section class="hero" id="home">
+      <div class="hero-content fade-up">
+        <div class="hero-subtitle">
+          <i class="fas fa-crown"></i>
+          <span>IL PREDESTINATO · SCUDERIA FERRARI</span>
+        </div>
+        <h1>CHARLES LECLERC</h1>
+        <p class="hero-description">
+          Velocidade, precisão e paixão. O futuro da Ferrari e a esperança de Mônaco. 
+          Cada curva é uma obra-prima, cada vitória um capítulo da história.
+        </p>
+        
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-number">7</div>
+            <div class="stat-label">VITÓRIAS</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">31</div>
+            <div class="stat-label">PÓDIOS</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">23</div>
+            <div class="stat-label">POLES</div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a href="#" class="btn btn-primary" id="nextRaceBtn">
+            <i class="fas fa-flag-checkered"></i> PRÓXIMA CORRIDA
+          </a>
+          <a href="#" class="btn btn-outline" id="highlightsBtn">
+            <i class="fas fa-play"></i> HIGHLIGHTS 2025
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-image fade-up">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='700' viewBox='0 0 600 700'%3E%3Crect width='600' height='700' fill='%231a1a24'/%3E%3Ctext x='100' y='250' font-family='Racing Sans One' font-size='80' fill='%23e10600'%3E16%3C/text%3E%3Ctext x='120' y='380' fill='%23d4af37' font-size='40'%3ELECLERC%3C/text%3E%3Ctext x='80' y='500' fill='%23ffffff' font-size='24'%3EIL PREDESTINATO%3C/text%3E%3C/svg%3E"
+             alt="Charles Leclerc">
+        <div class="image-overlay">
+          <i class="fas fa-flag"></i> MONACO · #16 · FERRARI
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline" id="timeline">
+      <h2 class="section-title">FORJA DE UM CAMPEÃO</h2>
+      <div class="timeline-grid">
+        <div class="timeline-card fade-up">
+          <div class="timeline-year">2018</div>
+          <div class="timeline-title">Estreia na F1</div>
+          <p>Sauber · 13º no mundial, mas impressiona com pontos no Bahrein.</p>
+        </div>
+        <div class="timeline-card fade-up">
+          <div class="timeline-year">2019</div>
+          <div class="timeline-title">Primeira Vitória</div>
+          <p>Spa-Francorchamps · 2 vitórias, 7 poles na temporada.</p>
+        </div>
+        <div class="timeline-card fade-up">
+          <div class="timeline-year">2022</div>
+          <div class="timeline-title">Vice-Campeão</div>
+          <p>3 vitórias, 9 poles. Luta pelo título até o fim.</p>
+        </div>
+        <div class="timeline-card fade-up">
+          <div class="timeline-year">2024</div>
+          <div class="timeline-title">Lenda Viva</div>
+          <p>Vitórias em Monaco e Monza. Contrato até 2026.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Helmets Gallery -->
+    <section class="helmets-gallery" id="helmets">
+      <h2 class="section-title">CAPACETES ICÔNICOS</h2>
+      <div class="helmets-grid">
+        <div class="helmet-item fade-up">
+          <i class="fas fa-helmet-safety"></i>
+          <div class="helmet-year">2019</div>
+          <p>Primeiro capacete Ferrari<br>Vermelho clássico</p>
+        </div>
+        <div class="helmet-item fade-up">
+          <i class="fas fa-helmet-safety"></i>
+          <div class="helmet-year">2022</div>
+          <p>Homenagem a Jules<br>Estrela dourada</p>
+        </div>
+        <div class="helmet-item fade-up">
+          <i class="fas fa-helmet-safety"></i>
+          <div class="helmet-year">2024</div>
+          <p>Monaco Special<br>Ouro e rubi</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Advanced Stats -->
+    <section class="advanced-stats" id="stats">
+      <div>
+        <h3 style="font-size: 2rem;">EVOLUÇÃO POR TEMPORADA</h3>
+        <div class="stat-chart" id="chart">
+          <div class="chart-bar" data-height="60"><span>2019</span></div>
+          <div class="chart-bar" data-height="45"><span>2020</span></div>
+          <div class="chart-bar" data-height="55"><span>2021</span></div>
+          <div class="chart-bar" data-height="90"><span>2022</span></div>
+          <div class="chart-bar" data-height="70"><span>2023</span></div>
+          <div class="chart-bar" data-height="85"><span>2024</span></div>
+        </div>
+        <p style="color: #aaa; margin-top: 1rem;">*Pontuação relativa (percentual do campeão)</p>
+      </div>
+      <div>
+        <h3 style="font-size: 2rem;">RECORDES</h3>
+        <ul class="records-list">
+          <li><i class="fas fa-trophy"></i> Mais poles da Ferrari em uma temporada (9 - 2022)</li>
+          <li><i class="fas fa-star"></i> Mais jovem a vencer com Ferrari (21 anos)</li>
+          <li><i class="fas fa-flag"></i> 4 poles consecutivas em 2022</li>
+          <li><i class="fas fa-road"></i> 100% pódios em Monaco (últimos 3 anos)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Next Race -->
+    <section class="next-race" id="race">
+      <h2 style="font-size: 2.5rem;">PRÓXIMA CORRIDA</h2>
+      <h3 style="font-size: 3rem; margin: 1rem 0; color: var(--monaco-gold);">GP DE MÔNACO</h3>
+      <div class="race-countdown" id="countdown">
+        <div class="countdown-item">
+          <div class="countdown-number" id="days">00</div>
+          <div class="countdown-label">DIAS</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-number" id="hours">00</div>
+          <div class="countdown-label">HORAS</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-number" id="minutes">00</div>
+          <div class="countdown-label">MINUTOS</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-number" id="seconds">00</div>
+          <div class="countdown-label">SEGUNDOS</div>
+        </div>
+      </div>
+      <p style="color: #aaa; margin-top: 2rem;">
+        <i class="fas fa-map-pin" style="color: var(--ferrari-red);"></i> Circuit de Monaco · 26-28 Maio 2025
+      </p>
+      <a href="#" class="btn btn-primary" style="margin-top: 2rem;" id="ticketsBtn">
+        <i class="fas fa-ticket-alt"></i> GARANTIR INGRESSOS
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>© 2025 · CHARLES LECLERC · <span style="color: var(--ferrari-red);">#EssereFerrari</span></div>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-tiktok"></i></a>
+      </div>
+      <div><i class="fas fa-map-pin" style="color: var(--ferrari-red);"></i> MONTE CARLO · MONACO</div>
+    </footer>
+  </div>
+
+  <script>
+    // ================== BOTÕES FUNCIONAIS ==================
+    
+    // Botão "Próxima Corrida" - rola até a seção
+    document.getElementById('nextRaceBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('race').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Botão "Highlights 2025" - abre alerta (simulação de vídeo)
+    document.getElementById('highlightsBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      alert('🎥 Highlights 2025: Assista aos melhores momentos da temporada no nosso canal do YouTube!');
+      // Poderia redirecionar: window.open('https://youtube.com', '_blank');
+    });
+
+    // Botão "Garantir Ingressos"
+    document.getElementById('ticketsBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      alert('🎫 Redirecionando para a plataforma oficial de venda de ingressos...');
+      // window.location.href = 'https://tickets.formula1.com';
+    });
+
+    // Links da navbar (scroll suave)
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') {
+          document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Atualizar classe active
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // ================== SCROLL REVEAL (fade-up) ==================
+    const fadeElements = document.querySelectorAll('.fade-up');
+    
+    function checkFade() {
+      fadeElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        if (rect.top < windowHeight - 100) {
+          el.classList.add('visible');
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', checkFade);
+    window.addEventListener('resize', checkFade);
+    checkFade(); // inicial
+
+    // ================== LINHAS DE VELOCIDADE (scroll) ==================
+    window.addEventListener('scroll', () => {
+      const speedLines = document.getElementById('speedLines');
+      const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      speedLines.style.opacity = scrollPercent * 0.4; // máximo 0.4
+    });
+
+    // ================== COUNTDOWN ==================
+    function updateCountdown() {
+      const raceDate = new Date('May 26, 2025 15:00:00 GMT+2').getTime();
+      const now = new Date().getTime();
+      const distance = raceDate - now;
+
+      if (distance < 0) {
+        document.getElementById('days').innerHTML = '00';
+        document.getElementById('hours').innerHTML = '00';
+        document.getElementById('minutes').innerHTML = '00';
+        document.getElementById('seconds').innerHTML = '00';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').innerHTML = days.toString().padStart(2, '0');
+      document.getElementById('hours').innerHTML = hours.toString().padStart(2, '0');
+      document.getElementById('minutes').innerHTML = minutes.toString().padStart(2, '0');
+      document.getElementById('seconds').innerHTML = seconds.toString().padStart(2, '0');
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // ================== ANIMAÇÃO DO GRÁFICO ==================
+    function animateChart() {
+      const bars = document.querySelectorAll('.chart-bar');
+      bars.forEach(bar => {
+        const height = bar.getAttribute('data-height') + '%';
+        bar.style.height = height;
+      });
+    }
+
+    // Dispara quando a seção de stats entra em view
+    const statsSection = document.getElementById('stats');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateChart();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(statsSection);
+
+    // ================== EASTER EGG: digite "MONACO" ==================
+    let typed = '';
+    document.addEventListener('keydown', (e) => {
+      typed += e.key.toLowerCase();
+      if (typed.length > 6) typed = typed.slice(-6);
+      
+      if (typed === 'monaco') {
+        document.body.classList.add('easter-egg-active');
+        alert('🇲🇨 MONACO ACTIVATED! Modo festa ativado por 5 segundos!');
+        
+        // Pequeno confetti
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = '-10px';
+            confetti.style.width = '8px';
+            confetti.style.height = '8px';
+            confetti.style.background = i % 2 ? '#e10600' : '#d4af37';
+            confetti.style.borderRadius = '50%';
+            confetti.style.zIndex = '9999';
+            confetti.style.pointerEvents = 'none';
+            confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear`;
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 5000);
+          }, i * 30);
+        }
+        
+        setTimeout(() => {
+          document.body.classList.remove('easter-egg-active');
+        }, 5000);
+      }
+    });
+
+    // CSS para a animação do confetti
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
