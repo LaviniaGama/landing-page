@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Verstappen - F1 World Champion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0a0e27;
+            --primary-blue: #1a3a52;
+            --accent-orange: #ff6b35;
+            --accent-red: #e63946;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(10, 14, 39, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+            padding: 1.2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a.active {
+            color: var(--accent-orange);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-orange);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            margin-top: 80px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(230, 57, 70, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            width: 100%;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-text h1 .highlight {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-item .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-item .label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--accent-orange);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-orange);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: fadeInRight 1s ease-out 0.3s both;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-title .highlight {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        /* ===== ACHIEVEMENTS SECTION ===== */
+        .achievements {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, rgba(26, 58, 82, 0.3) 0%, rgba(230, 57, 70, 0.05) 100%);
+            border-top: 1px solid rgba(255, 107, 53, 0.1);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+        }
+
+        .achievements .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .achievement-card {
+            background: linear-gradient(135deg, rgba(26, 58, 82, 0.5) 0%, rgba(230, 57, 70, 0.05) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 107, 53, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.15);
+            background: linear-gradient(135deg, rgba(26, 58, 82, 0.7) 0%, rgba(230, 57, 70, 0.1) 100%);
+        }
+
+        .achievement-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .achievement-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(230, 57, 70, 0.05) 100%);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-box:hover {
+            border-color: var(--accent-orange);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .stat-box .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box .label {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.8) 0%, var(--primary-dark) 100%);
+            border-top: 1px solid rgba(255, 107, 53, 0.1);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        footer .footer-highlight {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1.5rem;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-item .number {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .about-text h3 {
+                font-size: 1.8rem;
+            }
+
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-box .number {
+                font-size: 2.5rem;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">MAX 33</a>
+            <ul>
+                <li><a href="index.html" class="active">Início</a></li>
+                <li><a href="carreira.html">Carreira</a></li>
+                <li><a href="recordes.html">Recordes</a></li>
+                <li><a href="galeria.html">Galeria</a></li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    <span class="highlight">Max Verstappen</span>
+                    <br>Tetracampeão Mundial
+                </h1>
+                <p>O piloto mais dominante da Fórmula 1 moderna, com recordes impressionantes e uma carreira extraordinária na Red Bull Racing.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="number">4</div>
+                        <div class="label">Títulos Mundiais</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">71+</div>
+                        <div class="label">Vitórias</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">26</div>
+                        <div class="label">Anos de Idade</div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="carreira.html" class="btn btn-primary">Explorar Carreira</a>
+                    <a href="recordes.html" class="btn btn-secondary">Ver Recordes</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663129264082/9QHLnns2ZireNLViELK6pa/max-verstappen-hero-QKYFdzFiFSckjAPccMcPso.webp" alt="Max Verstappen">
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">Quem é <span class="highlight">Max Verstappen</span></h2>
+            <p class="section-subtitle">Uma jornada extraordinária no mundo da Fórmula 1</p>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>O Fenômeno da F1</h3>
+                    <p>
+                        Max Emilian Verstappen nasceu em 30 de setembro de 1997 em Hasselt, Bélgica. Filho do ex-piloto de Fórmula 1 Jos Verstappen, Max herdou o talento e a paixão pelo automobilismo desde muito jovem.
+                    </p>
+                    <p>
+                        Em 2015, aos apenas 17 anos, Max se tornou o piloto mais jovem a estrear na Fórmula 1, quebrando recordes desde o primeiro dia. Sua ascensão foi meteórica, demonstrando habilidades extraordinárias e uma mentalidade vencedora incomparável.
+                    </p>
+                    <p>
+                        Atualmente, Max é tetracampeão mundial consecutivo (2021-2022-2023-2024) pela Red Bull Racing, consolidando-se como um dos maiores pilotos da história da Fórmula 1. Seu domínio, velocidade e consistência o tornaram uma lenda viva do esporte.
+                    </p>
+                </div>
+
+                <div class="about-image">
+                    <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663129264082/9QHLnns2ZireNLViELK6pa/f1-car-racing-Jrgw7CE2BUyZRTQFSfTBXW.webp" alt="Red Bull F1 Car">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACHIEVEMENTS SECTION -->
+    <section class="achievements" id="achievements">
+        <div class="container">
+            <h2 class="section-title">Principais <span class="highlight">Conquistas</span></h2>
+            <p class="section-subtitle">Recordes e marcos históricos na carreira de Max</p>
+
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="icon">🏆</div>
+                    <h3>4 Títulos</h3>
+                    <p>Campeão Mundial 2021, 2022, 2023 e 2024</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="icon">🏁</div>
+                    <h3>71+ Vitórias</h3>
+                    <p>Grandes Prêmios conquistados na carreira</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="icon">⚡</div>
+                    <h3>19 Vitórias</h3>
+                    <p>Recorde em uma única temporada (2023)</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="icon">🔥</div>
+                    <h3>10 Vitórias</h3>
+                    <p>Sequência consecutiva de vitórias</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="icon">🚀</div>
+                    <h3>Mais Jovem</h3>
+                    <p>Piloto mais jovem a estrear na F1 (17 anos)</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="icon">👑</div>
+                    <h3>Dominação</h3>
+                    <p>Tetracampeão consecutivo inédito na era moderna</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats" id="stats">
+        <div class="container">
+            <h2 class="section-title">Estatísticas de <span class="highlight">Carreira</span></h2>
+            <p class="section-subtitle">Números que definem a grandeza de Max Verstappen</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="number">233</div>
+                    <div class="label">Grandes Prêmios Disputados</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="number">71+</div>
+                    <div class="label">Vitórias em GPs</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="number">4</div>
+                    <div class="label">Campeonatos Mundiais</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="number">21</div>
+                    <div class="label">Pódios em 2023</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="number">2015</div>
+                    <div class="label">Ano de Estreia na F1</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="number">1</div>
+                    <div class="label">Número da Sorte</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Max Verstappen - Fórmula 1</p>
+        <p>Red Bull Racing | <span class="footer-highlight">Tetracampeão Mundial</span></p>
+    </footer>
+
+    <script>
+        // Update active nav link
+        document.querySelectorAll('nav a').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+
+        // Add scroll effect to header
+        let lastScrollTop = 0;
+        const header = document.querySelector('header');
+
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.style.boxShadow = '0 5px 20px rgba(255, 107, 53, 0.1)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    </script>
+</body>
+</html>
