@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lewis Hamilton - Formula 1 Legend</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #e10600;
+            --secondary-color: #00d4ff;
+            --dark-bg: #0a0e27;
+            --light-text: #f0f0f0;
+            --accent-gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1f3a 100%);
+            color: var(--light-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(225, 6, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 70px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(225, 6, 0, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 10;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-content .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--secondary-color);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .stat-box .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box .label {
+            font-size: 0.9rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #ff3333);
+            color: white;
+            box-shadow: 0 10px 30px rgba(225, 6, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(225, 6, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-color);
+            color: var(--dark-bg);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .hero-image img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 30px 80px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Career Section */
+        .career {
+            padding: 6rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .career-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .career-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(225, 6, 0, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .career-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary-color);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .career-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .career-card p {
+            color: #b0b0b0;
+            line-height: 1.8;
+        }
+
+        /* Teams Section */
+        .teams {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, rgba(225, 6, 0, 0.05), rgba(0, 212, 255, 0.05));
+        }
+
+        .teams-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .team-card:hover {
+            transform: scale(1.05);
+            border-color: var(--secondary-color);
+        }
+
+        .team-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover img {
+            filter: brightness(1.1);
+        }
+
+        .team-info {
+            padding: 1.5rem;
+        }
+
+        .team-info h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-info p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Mission Section */
+        .mission {
+            padding: 6rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: center;
+        }
+
+        .mission-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .mission-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .mission-content p {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        footer p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                margin-top: 100px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">LH44</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#career">Carreira</a></li>
+            <li><a href="#teams">Equipes</a></li>
+            <li><a href="#mission">Missão</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Lewis Hamilton</h1>
+            <p class="subtitle">7x Campeão Mundial de Fórmula 1</p>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="number">105</div>
+                    <div class="label">Vitórias</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">104</div>
+                    <div class="label">Pole Positions</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">202</div>
+                    <div class="label">Pódios</div>
+                </div>
+            </div>
+
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="scrollToSection('career')">Explorar Carreira</button>
+                <button class="btn btn-secondary" onclick="scrollToSection('mission')">Conhecer a Missão</button>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=500&h=600&fit=crop" alt="Lewis Hamilton">
+        </div>
+    </section>
+
+    <!-- Career Section -->
+    <section class="career" id="career">
+        <h2 class="section-title">Carreira Extraordinária</h2>
+        <div class="career-grid">
+            <div class="career-card">
+                <h3>🏁 Estreia Brilhante</h3>
+                <p>Em sua primeira temporada (2007), Lewis Hamilton conquistou 4 vitórias e estabeleceu vários recordes como piloto estreante, terminando em segundo lugar no campeonato.</p>
+            </div>
+            <div class="career-card">
+                <h3>🏆 Sete Títulos</h3>
+                <p>Igualou o recorde de Michael Schumacher com 7 campeonatos mundiais, consolidando seu lugar como um dos maiores pilotos da história da Fórmula 1.</p>
+            </div>
+            <div class="career-card">
+                <h3>🚀 Era Mercedes</h3>
+                <p>Conquistou 6 de seus 7 títulos mundiais com a Mercedes, formando uma parceria dominante que redefiniu a Fórmula 1 moderna.</p>
+            </div>
+            <div class="career-card">
+                <h3>📊 Recordes</h3>
+                <p>Detém os recordes de mais vitórias (105), pole positions (104) e pódios (202) na história da Fórmula 1.</p>
+            </div>
+            <div class="career-card">
+                <h3>🎯 Consistência</h3>
+                <p>Pontuou em 18 anos consecutivos, demonstrando uma consistência incomparável ao longo de sua carreira.</p>
+            </div>
+            <div class="career-card">
+                <h3>🔴 Novo Capítulo</h3>
+                <p>Em 2025, inicia uma nova era ao se juntar à Ferrari, um dos times mais icônicos da Fórmula 1, buscando seu oitavo título mundial.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teams Section -->
+    <section class="teams" id="teams">
+        <h2 class="section-title">Equipes Memoráveis</h2>
+        <div class="teams-container">
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=250&fit=crop" alt="Mercedes">
+                <div class="team-info">
+                    <h3>Mercedes AMG Petronas</h3>
+                    <p>2013-2024 | 6 Campeonatos | 73 Vitórias</p>
+                </div>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=250&fit=crop" alt="Ferrari">
+                <div class="team-info">
+                    <h3>Scuderia Ferrari</h3>
+                    <p>2025+ | Novo Desafio | Legado Italiano</p>
+                </div>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=250&fit=crop" alt="Ferrari 2025">
+                <div class="team-info">
+                    <h3>Parceria Histórica</h3>
+                    <p>Charles Leclerc & Lewis Hamilton | Futuro Brilhante</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission" id="mission">
+        <div class="mission-content">
+            <h2>Mission 44</h2>
+            <p>Lewis Hamilton fundou a Mission 44 para empoderar jovens de grupos sub-representados no Reino Unido, oferecendo oportunidades em STEM (Ciência, Tecnologia, Engenharia e Matemática).</p>
+            <p>Através de sua fundação, Hamilton investe em educação, diversidade e inclusão, transformando vidas e criando o futuro de uma geração.</p>
+            <button class="btn btn-primary" onclick="alert('Visite mission44.org para saber mais!')">Saiba Mais</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#" onclick="alert('Instagram: @lewishamilton')">Instagram</a>
+            <a href="#" onclick="alert('Twitter: @LewisHamilton')">Twitter</a>
+            <a href="#" onclick="alert('TikTok: @lewishamilton')">TikTok</a>
+            <a href="#" onclick="alert('YouTube: Lewis Hamilton')">YouTube</a>
+        </div>
+        <p>&copy; 2025 Lewis Hamilton Official. All rights reserved. | Designed with ❤️</p>
+    </footer>
+
+    <script>
+        // Smooth scroll to sections
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(10, 14, 39, 0.98)';
+                nav.style.boxShadow = '0 4px 30px rgba(0, 212, 255, 0.1)';
+            } else {
+                nav.style.background = 'rgba(10, 14, 39, 0.95)';
+                nav.style.boxShadow = '0 2px 20px rgba(225, 6, 0, 0.1)';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all career cards and team cards
+        document.querySelectorAll('.career-card, .team-card').forEach(card => {
+            card.style.opacity = '0';
+            observer.observe(card);
+        });
+
+        // Active nav link
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = 'var(--light-text)';
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.style.color = 'var(--secondary-color)';
+                }
+            });
+        });
+
+        // Mobile menu toggle (optional enhancement)
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✓ Lewis Hamilton Landing Page Loaded Successfully!');
+        });
+    </script>
+</body>
+</html>
